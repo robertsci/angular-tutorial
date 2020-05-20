@@ -1,0 +1,10 @@
+<!--<button  class="btn btn-primary"  (click)="showSecret = !showSecret">Display Details</button>-->
+
+<button  class="btn btn-primary"  (click)="onToggleDetails()">Display Details</button>
+
+<p *ngIf="showSecret">Rows was displayed based on condition</p>
+
+<div *ngFor="let rowsItem of rows"
+     [ngStyle]="{backgroundColor: rowsItem >= 5 ? 'blue' : 'transparent'}"
+     [ngClass]="{'white-text': rowsItem >= 5 }"
+>{{rowsItem}}</div>
