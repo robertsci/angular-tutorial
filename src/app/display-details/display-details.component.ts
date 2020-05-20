@@ -10,6 +10,7 @@ export class DisplayDetailsComponent implements OnInit {
 
   showSecret: boolean = false;
   rows: any = [];
+  n: number = this.rows.index
   constructor() { }
 
   ngOnInit(): void {
@@ -20,8 +21,12 @@ export class DisplayDetailsComponent implements OnInit {
     this.rows.push(timestamp())
   }
 
-  onToggleDetails() {
-    this.rows.push(this.rows.length + 1);
-    return this.showSecret = !this.showSecret
+  onToggleDetails(): boolean {
+    this.rows.push(new Date());
+    return this.showSecret = !this.showSecret;
+  }
+
+  getRowsNumber(): number {
+    return this.rows.index;
   }
 }

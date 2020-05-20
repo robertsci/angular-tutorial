@@ -4,7 +4,7 @@
 
 <p *ngIf="showSecret">Rows was displayed based on condition</p>
 
-<div *ngFor="let rowsItem of rows"
-     [ngStyle]="{backgroundColor: rowsItem >= 5 ? 'blue' : 'transparent'}"
-     [ngClass]="{'white-text': rowsItem >= 5 }"
+<div *ngFor="let rowsItem of rows;let n = index"
+     [ngStyle]="{backgroundColor: n >= 5 ? 'blue' : 'transparent'}"
+     [ngClass]="{'white-text': n >= 5 }"
 >{{rowsItem}}</div>
