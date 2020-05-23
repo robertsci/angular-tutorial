@@ -12,7 +12,7 @@ export class RecipeService {
 
   ];
 
-  get recipes(): Recipe[] {
+  get getRecipes(): Recipe[] {
     return this._recipes.slice();
   }
 }
