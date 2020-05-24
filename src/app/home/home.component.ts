@@ -13,9 +13,21 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
-    this.firstObservableSubscription = interval(1000).subscribe(count => {
-      console.log(count)
-    });
+    // this.firstObservableSubscription = interval(1000).subscribe(count => {
+    //   console.log(count)
+    // });
+    const customObservable = Observable.create(observer => {
+      let count = 0;
+      setInterval(() => {
+        observer.next(count);
+        count++;
+      },1000)
+    })
+
+
+    this.firstObservableSubscription = customObservable.subscribe(data => {
+      console.log(data);
+    })
   }
 
   ngOnDestroy(): void {
