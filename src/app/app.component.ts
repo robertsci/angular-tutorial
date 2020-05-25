@@ -9,7 +9,7 @@ import {NgForm} from "@angular/forms";
 export class AppComponent {
   @ViewChild('f') signupForm: NgForm;
   defaultQuestion = "pet";
-
+  answer: string = "";
   suggestUserName() {
     const suggestedName = 'Superuser';
   }
@@ -17,6 +17,7 @@ export class AppComponent {
   // onSubmit(form: NgForm) {
   //   console.log(form);
   // }
+
 
   onSubmit() {
     console.log(this.signupForm);
