@@ -36,4 +36,8 @@ export class PostsService {
       })
       );
   }
+
+  deletePosts() {
+    return this.httpClient.delete('https://angular-first-project-97484.firebaseio.com/posts.json');
+  }
 }
