@@ -38,7 +38,8 @@ export class PostsService {
         {
           headers: new HttpHeaders({"Custom-header": "Hello"}),
           // params: new HttpParams().set('print', 'pretty')
-          params: searchParams
+          params: searchParams,
+          responseType: 'json'
         })
       .pipe(map(responseData => {
         const postsArray: Post[] = [];
@@ -59,7 +60,8 @@ export class PostsService {
     return this.httpClient.delete(
       'https://angular-first-project-97484.firebaseio.com/posts.json',
       {
-        observe: 'events'
+        observe: 'events',
+        responseType: 'json'
       }).pipe(tap(
         events => {
           console.log(events);
