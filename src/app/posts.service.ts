@@ -18,7 +18,9 @@ export class PostsService {
     const postData: Post = {title: title, content: content};
     this.httpClient.post<{ name: string }>(
       'https://angular-first-project-97484.firebaseio.com/posts.json',
-      postData
+      postData, {
+        observe: 'response'
+      }
     ).subscribe(responseData =>{
       console.log(responseData);
     }, error => {
