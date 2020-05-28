@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {RecipeService} from "../recipes/recipe.service";
 import {Recipe} from "../recipes/recipe.model";
-import {map} from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 
 @Injectable({providedIn: 'root'}) // used when you inject a service into another service. Here we inject the HttpService
 export class DataStorageService {
@@ -27,19 +27,17 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
-    this.httpClient.
-    get<Recipe[]>('https://angular-first-project-97484.firebaseio.com/recipes.json')
-      .pipe(map (
-        recipes => {
+    return this.httpClient.get<Recipe[]>('https://angular-first-project-97484.firebaseio.com/recipes.json')
+      .pipe(
+        map(recipes => {
           return recipes.map(recipe => {
-            return {...recipe, ingredients: recipe.ingredients ? recipe.ingredients : []
-            }
-          })
-        }
-      ))
-      .subscribe( recipes => {
-      this.recipeService.setRecipes(recipes);
-    })
+              return {...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] };
+          });
+        }),
+        tap(recipes => {
+          this.recipeService.setRecipes(recipes);
+        })
+      )
   }
 
 }
