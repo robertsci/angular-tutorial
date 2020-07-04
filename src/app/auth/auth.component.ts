@@ -1,4 +1,5 @@
 import {Component} from "@angular/core";
+import {NgForm} from "@angular/forms";
 
 
 @Component({
@@ -15,4 +16,9 @@ export class AuthComponent {
     this.isLoginMode = !this.isLoginMode;
   }
 
+  onSubmit(authForm: NgForm) {
+    console.log(authForm.value);
+    authForm.reset()
+
+  }
 }
