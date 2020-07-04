@@ -3,12 +3,13 @@ import {HttpClient} from "@angular/common/http";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs";
 
-interface AuthResponseData {
+export interface AuthResponseData {
   idToken: string;
   email: string;
   refreshToken: string;
   expiresIn:string;
   localId:string;
+  registered?: boolean;  // the "?" from this variable indicates that this is an optional parameter. This is because the sign in requests requires it, bot the sign up don't
 }
 
 @Injectable({
@@ -40,5 +41,14 @@ export class AuthService {
           return throwError(errorMessage);
         })
     );
+  }
+
+  login(email: string, password: string) {
+    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBHp4S91iPdK4AtG0qP8KRYr8qp8DNgKBg',
+      {
+        email: email,
+        password: password,
+        returnSecureToken: true
+      }).pipe();
   }
 }
