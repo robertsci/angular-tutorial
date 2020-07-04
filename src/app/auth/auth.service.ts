@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {catchError} from "rxjs/operators";
-import {throwError} from "rxjs";
+import {catchError, tap} from "rxjs/operators";
+import {Subject, throwError} from "rxjs";
+import {User} from "./user.model";
 
 export interface AuthResponseData {
   idToken: string;
@@ -17,6 +18,8 @@ export interface AuthResponseData {
 })
 export class AuthService {
 
+  user = new Subject<User>();
+
 
   constructor(private http: HttpClient ) {
   }
@@ -28,12 +31,9 @@ export class AuthService {
         email: email,
         password: password,
         returnSecureToken: true
-      }).pipe(
-      catchError(
-        this.handleError
-      )
-    );
-
+      }).pipe(catchError(this.handleError), tap(responseData => {
+      this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn)
+    }));
   }
 
   login(email: string, password: string) {
@@ -42,11 +42,15 @@ export class AuthService {
         email: email,
         password: password,
         returnSecureToken: true
-      }).pipe(
-      catchError(
-        this.handleError
-      )
-    );
+      }).pipe(catchError(this.handleError), tap(responseData => {
+      this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn)
+    }));
+  }
+
+  private handleAuthentication(email: string, userId: string, token: string, expiresIn: number) {
+    const expirationDate = new Date(new Date().getTime() + (expiresIn * 1000)) //creating a new date where we add seconds received from the firebase
+    const user = new User(email, userId, token, expirationDate);
+    this.user.next(user);
   }
 
   private handleError(errorResponse: HttpErrorResponse) {
